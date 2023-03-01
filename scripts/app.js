@@ -1,6 +1,18 @@
 const form = document.getElementById('registrar');
 const input = form.querySelector('input');
+
+const mainDiv = document.querySelector('.main');
 const ul = document.querySelector('#invitedList');
+
+const div = document.createElement('div');
+const filterLabel = createLabel("Hide those who haven't responded");
+const filterCheckBox = createInput('checkbox');
+
+div.appendChild(filterLabel);
+div.appendChild(filterCheckBox);
+mainDiv.insertBefore(div, ul);
+
+ul.parentNode
 
 form.addEventListener('submit', (e) => {
   e.preventDefault(); 
