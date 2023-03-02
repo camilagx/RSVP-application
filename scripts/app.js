@@ -5,7 +5,10 @@ const mainDiv = document.querySelector('.main');
 const ul = document.querySelector('#invitedList');
 
 const div = document.createElement('div');
-const filterLabel = createLabel("Hide those who haven't responded");
+const filterLabel = createElement("label","textContent", "Hide those who haven't responded");
+
+
+console.log(filterLabel);
 const filterCheckBox = createInput('checkbox');
 
 div.appendChild(filterLabel);
@@ -33,10 +36,8 @@ filterCheckBox.addEventListener('change', (e) => {
   }
 });
 
-
 form.addEventListener('submit', (e) => {
   e.preventDefault(); 
-  
   const li = createLi(input.value);
   ul.appendChild(li);
   input.value = '';
@@ -46,19 +47,18 @@ ul.addEventListener('click', (e) => {
   const btn = e.target;
   const li = btn.parentNode;
   let span = '';
-  let inputEdit = '';
   if(btn.textContent === 'remove'){
       li.remove();
   }else if(btn.textContent === 'edit'){
     btn.textContent = 'save';
-    inputEdit = createInput('text');
+    let inputEdit = createInput('text');
     span = li.firstElementChild;
     inputEdit.value = span.textContent;
     li.replaceChild(inputEdit, span);
     console.log(inputEdit);
   }else if(btn.textContent === 'save'){
     btn.textContent = 'edit';
-    inputEdit = li.firstElementChild;
+    let inputEdit = li.firstElementChild;
     span = document.createElement('span');
     span.textContent = inputEdit.value;
     li.replaceChild(span, inputEdit);
@@ -69,7 +69,7 @@ ul.addEventListener('click', (e) => {
 ul.addEventListener('change', (e) => {
   const checkbox = e.target;
   const checked = checkbox.checked;
-  const parent = checkbox.parentNode;
+  const parent = checkbox.parentNode.parentNode;
   
   if(checked){
    parent.className = 'responded'; 
@@ -77,28 +77,6 @@ ul.addEventListener('change', (e) => {
     parent.className = '';
   }
 });
-
-function createBtn(text, id, className){
-  const btn = document.createElement('button');
-  btn.textContent = text;
-  
-  if(id){
-   btn.id = id;
-  }
-  if(className){
-   btn.className = className; 
-  }
-  
-  return btn;
-}
-
-function createLabel(text, forAttr){
- const label = document.createElement('label');
- label.setAttribute('for',forAttr);
- label.textContent = text;
-  
- return label;
-}
 
 function createInput(type, id){
    const inputElement = document.createElement('input');
@@ -112,20 +90,27 @@ function createInput(type, id){
 }
 
 function createLi(text){
-  const label = createLabel('Confirmed','check'); 
-  const checkbox = createInput('checkbox','check');
-  const editBtn = createBtn('edit','edit-btn');
-  const removeBtn = createBtn('remove','remove-btn');
-  
+  const label = createElement('label', 'textContent', 'Confirmed');
+  const checkbox = createElement('input','type','checkbox');
+  label.appendChild(checkbox);
+  const editBtn = createElement('button','textContent', 'edit');
+  const removeBtn = createElement('button','textContent', 'remove');
+
   const li = document.createElement('li');
   const span = document.createElement('span');
   span.textContent = text;
   
   li.appendChild(span);
   li.appendChild(label);
-  li.appendChild(checkbox);
   li.appendChild(editBtn);
   li.appendChild(removeBtn);
   
   return li;
+}
+
+function createElement(elementName, property, value){
+  const element = document.createElement(elementName);
+  element[property] = value;
+
+  return element;
 }
